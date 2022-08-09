@@ -49,6 +49,13 @@ set(ARDUBOYTONES_SOURCE
         ../Arduboy2Playdate/ArduboyTones/ArduboyTones.cpp
         )
 
+# Aliases because I am too lazy to go fix all the typos.
+set(ARDUBOY_INCLUDE ${ARDUBOY_INCLUDES})
+set(ARDUBOY_SOURCES ${ARDUBOY_SOURCE})
+set(ARDUBOYPLAYTUNE_SOURCES ${ARDUBOYPLAYTUNE_SOURCE})
+set(ARDUBOYTONES_SOURCES ${ARDUBOYTONES_SOURCE})
+
+
 add_subdirectory("Arduboy3d")
 add_subdirectory("Arduminer")
 add_subdirectory("Begemmed")
