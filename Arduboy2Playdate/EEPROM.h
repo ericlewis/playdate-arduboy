@@ -23,161 +23,6 @@ extern "C" {
 }
 
 /***
-    EERef class.
-    This object references an EEPROM cell.
-    Its purpose is to mimic a typical byte of RAM, however its storage is the EEPROM.
-    This class has an overhead of two bytes, similar to storing a pointer to an EEPROM cell.
-***/
-
-struct EERef {
-
-    EERef(const int index)
-            : index(index)                 {}
-
-    //Access/read members.
-    uint8_t operator*() const
-    {
-        return 0;// TODO: eeprom_read_byte(/*(uint8_t*)*/ index);
-    }
-    operator uint8_t() const
-    {
-        return **this;
-    }
-
-    //Assignment/write members.
-    EERef &operator=(const EERef &ref)
-    {
-        return *this = *ref;
-    }
-    EERef &operator=(uint8_t in)
-    {
-        return *this;// TODO: eeprom_write_byte(/*(uint8_t*)*/ index, in), *this;
-    }
-    EERef &operator +=(uint8_t in)
-    {
-        return *this = **this + in;
-    }
-    EERef &operator -=(uint8_t in)
-    {
-        return *this = **this - in;
-    }
-    EERef &operator *=(uint8_t in)
-    {
-        return *this = **this * in;
-    }
-    EERef &operator /=(uint8_t in)
-    {
-        return *this = **this / in;
-    }
-    EERef &operator ^=(uint8_t in)
-    {
-        return *this = **this ^ in;
-    }
-    EERef &operator %=(uint8_t in)
-    {
-        return *this = **this % in;
-    }
-    EERef &operator &=(uint8_t in)
-    {
-        return *this = **this & in;
-    }
-    EERef &operator |=(uint8_t in)
-    {
-        return *this = **this | in;
-    }
-    EERef &operator <<=(uint8_t in)
-    {
-        return *this = **this << in;
-    }
-    EERef &operator >>=(uint8_t in)
-    {
-        return *this = **this >> in;
-    }
-
-    EERef &update(uint8_t in)
-    {
-        return  in != *this ? *this = in : *this;
-    }
-
-    /** Prefix increment/decrement **/
-    EERef &operator++()
-    {
-        return *this += 1;
-    }
-    EERef &operator--()
-    {
-        return *this -= 1;
-    }
-
-    /** Postfix increment/decrement **/
-    uint8_t operator++ (int)
-    {
-        uint8_t ret = **this;
-        return ++(*this), ret;
-    }
-
-    uint8_t operator-- (int)
-    {
-        uint8_t ret = **this;
-        return --(*this), ret;
-    }
-
-    int index; //Index of current EEPROM cell.
-};
-
-/***
-    EEPtr class.
-    This object is a bidirectional pointer to EEPROM cells represented by EERef objects.
-    Just like a normal pointer type, this can be dereferenced and repositioned using
-    increment/decrement operators.
-***/
-
-struct EEPtr {
-
-    EEPtr(const int index)
-            : index(index)                {}
-
-    operator int() const
-    {
-        return index;
-    }
-    EEPtr &operator=(int in)
-    {
-        return index = in, *this;
-    }
-
-    //Iterator functionality.
-    bool operator!=(const EEPtr &ptr)
-    {
-        return index != ptr.index;
-    }
-    EERef operator*()
-    {
-        return index;
-    }
-
-    /** Prefix & Postfix increment/decrement **/
-    EEPtr &operator++()
-    {
-        return ++index, *this;
-    }
-    EEPtr &operator--()
-    {
-        return --index, *this;
-    }
-    EEPtr operator++ (int)
-    {
-        return index++;
-    }
-    EEPtr operator-- (int)
-    {
-        return index--;
-    }
-
-    int index; //Index of current EEPROM cell.
-};
-
-/***
     EEPROMClass class.
     This object represents the entire EEPROM space.
     It wraps the functionality of EEPtr and EERef into a basic interface.
@@ -189,36 +34,25 @@ struct EEPtr {
 struct EEPROMClass {
 
     //Basic user access methods.
-    EERef operator[](const int idx)
-    {
-        return idx;
-    }
+
     uint8_t read(int idx)
     {
-        std::string name = std::to_string(idx);
-        char* ccx = new char[name.length() + 1];
-        std::copy(name.begin(), name.end(), ccx);
-        pd->file->open(ccx, kFileReadData);
-        return EERef(idx);
+        // TODO: revisit
+//        std::string name = std::to_string(idx);
+//        char* ccx = new char[name.length() + 1];
+//        std::copy(name.begin(), name.end(), ccx);
+//        pd->file->open(ccx, kFileReadData);
+        return 0;
     }
     void write(int idx, uint8_t val)
     {
-        (EERef(idx)) = val;
+
     }
     void update(int idx, uint8_t val)
     {
-        EERef(idx).update(val);
+
     }
 
-    //STL and C++11 iteration capability.
-    EEPtr begin()
-    {
-        return 0x00;
-    }
-    EEPtr end()
-    {
-        return length();  //Standards requires this to be the item after the last valid entry. The returned pointer is invalid.
-    }
     uint16_t length()
     {
         return 0;// TODO: E2END + 1;
