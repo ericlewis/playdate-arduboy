@@ -1,0 +1,6 @@
+#include "Sprites/cactus.h"
+#include "Sprites/cloud.h"
+#include "Sprites/dino.h"
+#include "Sprites/dinoDuck.h"
+#include "Sprites/TitleScreen.h"
+#include "Sprites/DownArrow.h"
