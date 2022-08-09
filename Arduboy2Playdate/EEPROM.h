@@ -195,10 +195,11 @@ struct EEPROMClass {
     }
     uint8_t read(int idx)
     {
-        std::string name = std::to_string(idx);
-        char* ccx = new char[name.length() + 1];
-        std::copy(name.begin(), name.end(), ccx);
-        pd->file->open(ccx, kFileReadData);
+        // TODO: revisit
+//        std::string name = std::to_string(idx);
+//        char* ccx = new char[name.length() + 1];
+//        std::copy(name.begin(), name.end(), ccx);
+//        pd->file->open(ccx, kFileReadData);
         return EERef(idx);
     }
     void write(int idx, uint8_t val)
