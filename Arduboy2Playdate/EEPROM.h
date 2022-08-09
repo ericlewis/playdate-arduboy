@@ -227,32 +227,34 @@ struct EEPROMClass {
     //Functionality to 'get' and 'put' objects to and from EEPROM.
     template< typename T > T &get(int idx, T &t)
     {
-        uint8_t *ptr = (uint8_t *) &t;
-        std::string name = std::to_string(idx);
-        char* ccx = new char[name.length() + 1];
-        std::copy(name.begin(), name.end(), ccx);
-        SDFile *file = pd->file->open(ccx, kFileReadData);
-
-        FileStat *stat = nullptr;
-        pd->file->stat(ccx, stat);
-        if (stat) {
-            pd->file->read(file, ptr, stat->size);
-            pd->file->close(file);
-            return t;
-        }
+        // TODO: revisit this
+//        uint8_t *ptr = (uint8_t *) &t;
+//        std::string name = std::to_string(idx);
+//        char* ccx = new char[name.length() + 1];
+//        std::copy(name.begin(), name.end(), ccx);
+//        SDFile *file = pd->file->open(ccx, kFileReadData);
+//
+//        FileStat *stat = nullptr;
+//        pd->file->stat(ccx, stat);
+//        if (stat) {
+//            pd->file->read(file, ptr, stat->size);
+//            pd->file->close(file);
+//            return t;
+//        }
 
         return t;
     }
 
     template< typename T > const T &put(int idx, const T &t)
     {
-        const uint8_t *ptr = (const uint8_t *) &t;
-        std::string name = std::to_string(idx);
-        char* ccx = new char[name.length() + 1];
-        std::copy(name.begin(), name.end(), ccx);
-        SDFile *file = pd->file->open(ccx, kFileWrite);
-        pd->file->write(file, ptr, sizeof(T));
-        pd->file->close(file);
+        // TODO: revisit this
+//        const uint8_t *ptr = (const uint8_t *) &t;
+//        std::string name = std::to_string(idx);
+//        char* ccx = new char[name.length() + 1];
+//        std::copy(name.begin(), name.end(), ccx);
+//        SDFile *file = pd->file->open(ccx, kFileWrite);
+//        pd->file->write(file, ptr, sizeof(T));
+//        pd->file->close(file);
         return t;
     }
 };
