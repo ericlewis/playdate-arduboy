@@ -1,0 +1,143 @@
+#include "bullet.h"
+#include "player.h"
+
+// globals ///////////////////////////////////////////////////////////////////
+const signed char BulletXVelocities[8] = {
+  0,
+  -2,
+  -3,
+  -2,
+  0,
+  2,
+  3,
+  2,
+};
+
+Bullet bullets[BULLET_MAX];
+
+// method implementations ////////////////////////////////////////////////////
+
+// setBullet
+// sets the position and the velocity of a bullet
+bool setBullet(Bullet& obj, int x, int y, char vx, char vy)
+{
+  if (!obj.active)
+  {
+    obj.x = x;
+    obj.y = y;
+    obj.vx = vx;
+    obj.vy = vy;
+    obj.active = true;
+    return true;
+  }
+  return false;
+}
+
+// addBullet
+// searches the bullet list for an empty slot, adds one if available
+void addBullet(int x, int y, byte direction, char vx, char vy)
+{
+  byte id;
+
+  for (id = 0; id < BULLET_MAX; id++)
+  {
+    if (setBullet(
+          bullets[id],
+          x - BULLET_WIDTH / 2,
+          y - BULLET_HEIGHT / 2,
+          vx + BulletXVelocities[direction],
+          vy + BulletXVelocities[(direction + 6) % 8]))
+    {
+      sound.tone(440, 20);
+      break;
+    }
+  }
+}
+
+
+// updateBullet
+// updates a bullet according to the game rules
+void updateBullet(Bullet& obj)
+{
+  byte id;
+
+  if (obj.active)
+  {
+    // horizontal physics
+    obj.x += obj.vx;
+
+    // vertical physics
+    obj.y += obj.vy;
+
+    // collide with zombies
+    for (id = 0; id < ZOMBIE_MAX; id++)
+    {
+      if (zombieCollision(zombies[id], obj.x, obj.y, BULLET_WIDTH, BULLET_HEIGHT))
+      {
+        obj.active = false;
+        zombieHealthOffset(zombies[id], -1);
+        break;
+      }
+    }
+
+
+    if (getTileType(obj.x / TILE_WIDTH, obj.y / TILE_HEIGHT) > 10)
+    {
+      obj.active = false;
+    }
+
+    // delete if gone off screen
+    if ((obj.x < mapPositionX) || (obj.y < mapPositionY) || (obj.x > WIDTH + mapPositionX) || (obj.y > HEIGHT + mapPositionY))
+    {
+      obj.active = false;
+    }
+  }
+}
+
+
+// updateBullets
+// updates the entire list of bullets
+void updateBullets()
+{
+  byte id;
+
+  for (id = 0; id < BULLET_MAX; id++)
+  {
+    updateBullet(bullets[id]);
+  }
+}
+
+
+// drawBullets
+// draws the entire list of bullets
+void drawBullets()
+{
+  byte id;
+  int x, y;
+
+  for (id = 0; id < BULLET_MAX; id++)
+  {
+    Bullet& bull = bullets[id];
+
+    if (!bull.active) continue;
+    x = bull.x - mapPositionX;
+    y = bull.y - mapPositionY;
+    if ((x > 0) && (y > 0) && (x < WIDTH) && (y < HEIGHT))
+    {
+      sprites.drawSelfMasked(x, y, dotMask, 0);
+    }
+  }
+}
+
+
+// clearBullets
+// clears the entire list of bullets
+void clearBullets()
+{
+  byte id;
+
+  for (id = 0; id < BULLET_MAX; id++)
+  {
+    bullets[id].active = false;
+  }
+}

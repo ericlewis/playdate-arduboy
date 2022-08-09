@@ -1,0 +1,9 @@
+build
+*.pdx
+*.pdx.zip
+Source/pdex.bin
+Source/pdex.dll
+Source/pdex.dylib
+.DS_Store
+.idea/
+cmake-build-*
