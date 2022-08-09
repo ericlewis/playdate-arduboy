@@ -55,7 +55,6 @@ set(ARDUBOY_SOURCES ${ARDUBOY_SOURCE})
 set(ARDUBOYPLAYTUNE_SOURCES ${ARDUBOYPLAYTUNE_SOURCE})
 set(ARDUBOYTONES_SOURCES ${ARDUBOYTONES_SOURCE})
 
-
 add_subdirectory("Arduboy3d")
 add_subdirectory("Arduminer")
 add_subdirectory("Begemmed")

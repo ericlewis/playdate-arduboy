@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
 
 set(PLAYDATE_GAME_NAME ShadowRunner)
-set(PLAYDATE_GAME_DEVICE ShadowRunner)
+set(PLAYDATE_GAME_DEVICE ${PLAYDATE_GAME_NAME})
 
 project(${PLAYDATE_GAME_NAME} C CXX ASM)
 
