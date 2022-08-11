@@ -119,6 +119,7 @@ typedef uint64_t prog_uint64_t;
 #define PI 3.141592653589793
 #define min fmin
 #define max fmax
+#define abs(x) ((x)>0?(x):-(x))
 
 extern void setup();
 extern void loop();
